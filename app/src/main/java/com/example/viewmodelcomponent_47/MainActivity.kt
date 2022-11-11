@@ -9,24 +9,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
     }
 
     override fun onStart() {
         super.onStart()
-        object : CountDownTimer(20000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-               textView.text = (millisUntilFinished/1000).toString()
-            }
+        mainViewModel.liveData.observe(this, Observer {
+            textView.text = it
+        })
 
-            override fun onFinish() {
-
-            }
-
-        }.start()
     }
 }
